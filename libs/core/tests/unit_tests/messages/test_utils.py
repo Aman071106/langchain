@@ -713,7 +713,7 @@ def test_trim_messages_token_counter_shortcut_invalid() -> None:
     # Test with invalid shortcut - intentionally passing invalid string to verify
     # runtime error handling for dynamically-constructed inputs
     with pytest.raises(ValueError, match="Invalid token_counter shortcut 'invalid'"):
-        trim_messages(  # type: ignore[call-overload]
+        trim_messages(  # type: ignore[call-overload, arg-type]
             messages,
             max_tokens=50,
             token_counter="invalid",
@@ -743,6 +743,7 @@ def test_trim_messages_token_counter_shortcut_with_options() -> None:
     )
 
     # Should include system message and start on human
+    assert isinstance(result, list)
     assert len(result) >= 2
     assert isinstance(result[0], SystemMessage)
     assert any(isinstance(msg, HumanMessage) for msg in result[1:])
